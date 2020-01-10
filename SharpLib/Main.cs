@@ -16,7 +16,7 @@ namespace SharpLib
                 Console.WriteLine(infomartion);
                 LoadDlls();
                 var mainHwnd = Process.GetCurrentProcess().MainWindowHandle;
-                CallWndProcHook.SetHook();
+                CallWndProcHook.Hook();
                 CallWndProcHook.SendDataMessage(mainHwnd, Encoding.Default.GetBytes("CallWndProc Hooked!"));
 
                 var address = AddressManager.GetAddress();
@@ -26,8 +26,11 @@ namespace SharpLib
                 {
                     var nAddr = address.Value;
                     Console.WriteLine($"DemoClass_SendMsg Addr: {nAddr.DemoClass_SendMsg.ToString("X")}");
-                    DemoClass_SendMsgHook.SetHook(nAddr.DemoClass_SendMsg);
+                    DemoClass_SendMsgHook.Hook(nAddr.DemoClass_SendMsg);
                 }
+                Console.ReadKey();
+                CallWndProcHook.UnHook();
+                DemoClass_SendMsgHook.UnHook();
             }
             catch (Exception ex)
             {

@@ -9,9 +9,14 @@ namespace SharpLib.Hook
     class CallWndProcHook
     {
         private static IntPtr _nextHook;
-        public static void SetHook()
+        public static void Hook()
         {
             _nextHook = WindowAPI.SetWindowsHookExA(WinHookType.WH_CALLWNDPROC, CallWndProc, IntPtr.Zero, Process.GetCurrentProcess().Threads[0].Id);
+        }
+
+        public static void UnHook()
+        {
+            WindowAPI.UnhookWindowsHookEx(_nextHook);
         }
 
         public static void SendDataMessage(IntPtr hwnd, byte[] messageData)

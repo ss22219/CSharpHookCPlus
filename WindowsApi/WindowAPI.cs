@@ -10,6 +10,9 @@ namespace WindowsApi
         public static extern IntPtr SetWindowsHookExA(int idHook, SetWindowsHookDelegate lpfn, IntPtr hInstance, int threadId);
 
         [DllImport("user32.dll")]
+        public static extern bool UnhookWindowsHookEx(IntPtr hhk);
+
+        [DllImport("user32.dll")]
         public static extern int CallNextHookEx(IntPtr hhk, int nCode, int wParam, IntPtr lParam);
 
         [DllImport("user32.dll")]
