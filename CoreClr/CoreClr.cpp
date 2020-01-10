@@ -32,3 +32,9 @@ extern "C"  void  _declspec(dllexport) _stdcall  Hook(void** sourceFunc, void* t
 	DetourAttach(sourceFunc, targetFunc);
 	DetourTransactionCommit();
 }
+
+extern "C"  void  _declspec(dllexport) _stdcall  EndHook(void** sourceFunc, void* targetFunc) {
+	DetourTransactionBegin();
+	DetourDetach(sourceFunc, targetFunc);
+	DetourTransactionCommit();
+}

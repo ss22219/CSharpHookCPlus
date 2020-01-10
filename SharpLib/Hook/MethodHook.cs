@@ -7,6 +7,8 @@ namespace SharpLib.Hook
     {
         [DllImport("CoreClr.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern void Hook(ref IntPtr sourceMethod, IntPtr targetMethod);
+        [DllImport("CoreClr.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern void EndHook(ref IntPtr sourceMethod, IntPtr targetMethod);
     }
 
     public class MethodHook<T>
@@ -21,7 +23,7 @@ namespace SharpLib.Hook
             _sourceMethodPtr = sourceMethodPtr;
         }
 
-        public void Enabel()
+        public void Enable()
         {
             var sourceMethodPtr = _sourceMethodPtr;
             Native.Hook(ref sourceMethodPtr, _targetMethodPtr);
@@ -32,6 +34,18 @@ namespace SharpLib.Hook
             }
             _sourceMethodPtr = sourceMethodPtr;
             SourceMethod = Marshal.GetDelegateForFunctionPointer<T>(sourceMethodPtr);
+        }
+
+        public void Disable()
+        {
+            var sourceMethodPtr = _sourceMethodPtr;
+            Native.EndHook(ref sourceMethodPtr, _targetMethodPtr);
+            if (sourceMethodPtr == IntPtr.Zero)
+            {
+                Console.WriteLine("Disable Hook Faild!");
+                return;
+            }
+            _sourceMethodPtr = sourceMethodPtr;
         }
     }
 }

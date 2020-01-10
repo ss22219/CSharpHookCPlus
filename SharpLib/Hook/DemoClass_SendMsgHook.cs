@@ -26,7 +26,7 @@ namespace SharpLib.Hook
         public static void SetHook(IntPtr sendMsgFuncPtr)
         {
             _methodHook = new MethodHook<DemoClass_SendMsgDelegate>(sendMsgFuncPtr, _msgDelegate);
-            _methodHook.Enabel();
+            _methodHook.Enable();
         }
     }
 }
