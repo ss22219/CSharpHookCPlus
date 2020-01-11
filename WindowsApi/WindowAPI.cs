@@ -20,15 +20,16 @@ namespace WindowsApi
 
         [DllImport("user32.dll")]
         public static extern IntPtr FindWindow(string classname, string text);
-        /// <summary>
-        /// CallWndProc回调函数
-        /// </summary>
-        /// <param name="nCode">指定挂钩过程是否必须处理消息。如果nCode为HC_ACTION，则挂钩过程必须处理该消息。如果nCode小于零，则挂钩过程必须将消息传递给CallNextHookEx函数，而无需进一步处理，并且必须返回CallNextHookEx返回的值</param>
-        /// <param name="wParam">指定消息是否由当前线程发送。如果消息是由当前线程发送的，则它为非零；否则为0。否则为零</param>
-        /// <param name="lParam">指向CWPSTRUCT结构的指针，该结构包含有关消息的详细信息</param>
-        /// <returns></returns>
-        public delegate int SetWindowsHookDelegate(int nCode, int wParam, IntPtr lParam);
     }
+
+    /// <summary>
+    /// CallWndProc回调函数
+    /// </summary>
+    /// <param name="nCode">指定挂钩过程是否必须处理消息。如果nCode为HC_ACTION，则挂钩过程必须处理该消息。如果nCode小于零，则挂钩过程必须将消息传递给CallNextHookEx函数，而无需进一步处理，并且必须返回CallNextHookEx返回的值</param>
+    /// <param name="wParam">指定消息是否由当前线程发送。如果消息是由当前线程发送的，则它为非零；否则为0。否则为零</param>
+    /// <param name="lParam">指向CWPSTRUCT结构的指针，该结构包含有关消息的详细信息</param>
+    /// <returns></returns>
+    public delegate int SetWindowsHookDelegate(int nCode, int wParam, IntPtr lParam);
 
     public class WinMsgType
     {

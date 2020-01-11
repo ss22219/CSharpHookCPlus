@@ -8,10 +8,11 @@ namespace SharpLib.Hook
 {
     class CallWndProcHook
     {
+        private static readonly SetWindowsHookDelegate SetWindowsHook = CallWndProc;
         private static IntPtr _nextHook;
         public static void Hook()
         {
-            _nextHook = WindowAPI.SetWindowsHookExA(WinHookType.WH_CALLWNDPROC, CallWndProc, IntPtr.Zero, Process.GetCurrentProcess().Threads[0].Id);
+            _nextHook = WindowAPI.SetWindowsHookExA(WinHookType.WH_CALLWNDPROC, SetWindowsHook, IntPtr.Zero, Process.GetCurrentProcess().Threads[0].Id);
         }
 
         public static void UnHook()

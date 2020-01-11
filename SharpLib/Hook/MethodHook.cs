@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace SharpLib.Hook
@@ -14,12 +15,14 @@ namespace SharpLib.Hook
     public class MethodHook<T>
     {
         private readonly IntPtr _targetMethodPtr;
+        private readonly T _targetMethod;
         private IntPtr _sourceMethodPtr;
         public T SourceMethod { get; private set; }
 
         public MethodHook(IntPtr sourceMethodPtr, T targetMethod)
         {
-            _targetMethodPtr = Marshal.GetFunctionPointerForDelegate(targetMethod);
+            _targetMethod = targetMethod;
+            _targetMethodPtr = Marshal.GetFunctionPointerForDelegate(_targetMethod);
             _sourceMethodPtr = sourceMethodPtr;
         }
 
@@ -29,11 +32,11 @@ namespace SharpLib.Hook
             Native.Hook(ref sourceMethodPtr, _targetMethodPtr);
             if (sourceMethodPtr == IntPtr.Zero)
             {
-                Console.WriteLine("Hook Faild!");
+                Debug.WriteLine("Hook Faild!");
                 return;
             }   
             _sourceMethodPtr = sourceMethodPtr;
-            SourceMethod = Marshal.GetDelegateForFunctionPointer<T>(sourceMethodPtr);
+            SourceMethod = Marshal.GetDelegateForFunctionPointer<T>(_sourceMethodPtr);
         }
 
         public void Disable()
@@ -42,10 +45,11 @@ namespace SharpLib.Hook
             Native.UnHook(ref sourceMethodPtr, _targetMethodPtr);
             if (sourceMethodPtr == IntPtr.Zero)
             {
-                Console.WriteLine("Disable Hook Faild!");
+                Debug.WriteLine("Disable Hook Faild!");
                 return;
             }
             _sourceMethodPtr = sourceMethodPtr;
+            SourceMethod = default(T);
         }
     }
 }
